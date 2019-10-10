@@ -6,7 +6,11 @@ import com.example.caseStudy.eCart.service.ItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/items")
@@ -37,11 +41,43 @@ public class ItemController {
     @GetMapping(path = "/get", produces = "application/json")
     @ResponseBody
     public List<Items> getItem() {
-        return itemsService.getItems();}
+        return itemsService.getItems();
+    }
+
+//    @GetMapping(path = "/getByid/{id}")
+//    public Optional<Items> getFields(@PathVariable("id") Long id) {
+//        return itemsService.getById(id);
+//    }
+
+//    @GetMapping(path = "/FilterByPrice/price/{price}/{price2}")
+//    public ArrayList<Items> getByPrice(@PathVariable("price") Double price,
+//                                       @PathVariable("price2") Double price2){
+//        return (ArrayList<Items>) itemsService.getByPriceBetween(price,price2);
+//    }
+
+//    @GetMapping(path = "/FilterByPrice")
+//    public ArrayList<Items> getByPrice(@RequestParam(value = "lower", required = false) Double price,
+//                                       @RequestParam("upper") Double price2) {
+//        return (ArrayList<Items>) itemsService.getByPriceBetween(price, price2);
+//
+//    }
 
     @GetMapping(path = "/get/{category}", produces = "application/json")
-    @ResponseBody
-    public List<Items> getItemByCategory(@PathVariable("category") String category) {
-        return itemsService.getByCategory(category);
+    public List<Items> getByCategoryAndPrice(@PathVariable("category") String category,
+                                                  @RequestParam(value = "price1", required = false) Double price1,
+                                                  @RequestParam(value = "price2" ,required = false) Double price2) {
+        System.out.println(price1);
+        System.out.println(price2);
+        if(price1 == null && price2 == null){
+            return itemsService.getByCategory(category);
+        }
+        return itemsService.getByCategoryAndPrice(category, price1, price2);
+
     }
+
+//    @GetMapping(path = "/get/{category}", produces = "application/json")
+//    @ResponseBody
+//    public List<Items> getItemByCategory(@PathVariable("category") String category) {
+//        return itemsService.getByCategory(category);
+//    }
 }

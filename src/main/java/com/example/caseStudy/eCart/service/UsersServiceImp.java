@@ -2,16 +2,17 @@ package com.example.caseStudy.eCart.service;
 
 import com.example.caseStudy.eCart.model.Users;
 import com.example.caseStudy.eCart.repository.UsersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 public class UsersServiceImp implements UsersService {
-    public UsersRepository usersRepository;
+    @Autowired
+    private UsersRepository usersRepository;
     private Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     public String loginUsers(String email, String password) {
@@ -21,12 +22,12 @@ public class UsersServiceImp implements UsersService {
         return "invalid credentials";
     }
 
-    public String signUpUser(Users users) {
+    public Boolean signUpUser(Users users) {
         if (!usersRepository.existsByEmail(users.getEmail())) {
             usersRepository.saveAndFlush(users);
-            return "signed in";
+            return true;
         }
-        return "error signing in";
+        return false;
     }
 
     public String removeAllUsers() {
@@ -43,12 +44,11 @@ public class UsersServiceImp implements UsersService {
         return usersRepository.findAll();
     }
 
-    public String getUser(String email) {
-        Optional<Users> user = usersRepository.existsByEmail(email);
-        if (user.isPresent()) {
-            LOGGER.log(Level.INFO,user.get().getEmail());
-            return user.get().toString();
+    public Optional<Users> getUser(String email) {
+        boolean isPresent = usersRepository.existsByEmail(email);
+        if (isPresent) {
+            return usersRepository.findByEmail(email);
         }
-        return "User Not Found";
+        return null;
     }
 }

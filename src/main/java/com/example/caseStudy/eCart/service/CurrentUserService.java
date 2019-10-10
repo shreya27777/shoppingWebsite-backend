@@ -1,5 +1,4 @@
 package com.example.caseStudy.eCart.service;
 
-public interface UsersService {
+public class CurrentUserService {
 }
-
