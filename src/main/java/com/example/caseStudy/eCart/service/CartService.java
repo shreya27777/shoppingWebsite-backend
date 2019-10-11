@@ -60,20 +60,33 @@ public class CartService {
         return cartRepository.findAllByUsers(users);
     }
 
-    public String decreaseQuantity(Long productId, Principal principal) {
+    public List<Cart> decreaseQuantity(Long productId, Principal principal) {
         Users users = usersRepository.findByEmail(principal.getName()).get();
         Items items = itemsRepository.findById(productId).get();
         Cart cart = cartRepository.findByUsersAndItems(users, items).get();
-        if (cart.getQuantity() == 1) {
-            return "quantity cant be decreased further";
-        } else {
+        if (cart.getQuantity() > 1) {
             cart.setQuantity(cart.getQuantity() - 1);
             cartRepository.saveAndFlush(cart);
-            return "quantity decreased";
         }
+        return cartRepository.findAllByUsers(users);
     }
 
-    public List<Orders> checkOut(Principal principal){
+    public List<Cart> getItemsFromCart(Principal principal) {
+        Users users = usersRepository.findByEmail(principal.getName()).get();
+        return cartRepository.findAllByUsers(users);
+    }
+
+    public Double getTotal(Principal principal){
+        Users users = usersRepository.findByEmail(principal.getName()).get();
+       List<Cart> cart = cartRepository.findAllByUsers(users);
+      double sum=0;
+        for (int i = 0; i < cart.size(); i++) {
+            sum += (cart.get(i).getQuantity() * cart.get(i).getItems().getPrice());
+        }
+        return sum;
+    }
+
+    public List<Orders> checkOut(Principal principal) {
         Users users = usersRepository.findByEmail(principal.getName()).get();
         List<Cart> cartList = cartRepository.findAllByUsers(users);
 
