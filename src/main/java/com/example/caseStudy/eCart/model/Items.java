@@ -14,7 +14,7 @@ public class Items implements Serializable {
     private String details ;
     private String image ;
     private String category ;
-    private String subCategory ;
+    private String description;
     @Column(nullable = false, columnDefinition = "int default '1'")
     private Integer active;
 
@@ -73,12 +73,12 @@ public class Items implements Serializable {
         this.category = category;
     }
 
-    public String getSubCategory() {
-        return subCategory;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getActive() {

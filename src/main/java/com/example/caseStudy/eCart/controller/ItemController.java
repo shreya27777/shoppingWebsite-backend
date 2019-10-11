@@ -44,10 +44,10 @@ public class ItemController {
         return itemsService.getItems();
     }
 
-//    @GetMapping(path = "/getByid/{id}")
-//    public Optional<Items> getFields(@PathVariable("id") Long id) {
-//        return itemsService.getById(id);
-//    }
+    @GetMapping(path = "/getByid/{id}")
+    public Optional<Items> getFields(@PathVariable("id") Long id) {
+        return itemsService.getById(id);
+    }
 
 //    @GetMapping(path = "/FilterByPrice/price/{price}/{price2}")
 //    public ArrayList<Items> getByPrice(@PathVariable("price") Double price,
@@ -66,8 +66,6 @@ public class ItemController {
     public List<Items> getByCategoryAndPrice(@PathVariable("category") String category,
                                                   @RequestParam(value = "price1", required = false) Double price1,
                                                   @RequestParam(value = "price2" ,required = false) Double price2) {
-        System.out.println(price1);
-        System.out.println(price2);
         if(price1 == null && price2 == null){
             return itemsService.getByCategory(category);
         }

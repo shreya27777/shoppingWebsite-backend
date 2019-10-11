@@ -103,5 +103,9 @@ public class CartService {
         return ordersRepository.findAllByUserId(users.getUserId());
     }
 
+    public List<Orders> orderHistory(Principal principal){
+        Users users = usersRepository.findByEmail(principal.getName()).get();
+        return ordersRepository.findAllByUserId(users.getUserId());
+    }
 }
 

@@ -56,5 +56,10 @@ public class CartController {
         return cartService.checkOut(principal);
     }
 
+    @GetMapping(path = "/order-history", produces = "application/json")
+    @ResponseBody
+    public List<Orders> getOrders(Principal principal){
+        return cartService.orderHistory(principal);
+    }
 
 }
