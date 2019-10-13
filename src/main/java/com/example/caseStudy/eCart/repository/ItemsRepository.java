@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ItemsRepository extends JpaRepository<Items, Long> {
+    List<Items> findAllByCategoryAndPopular(String category, Boolean popular);
+
     List<Items> findAllByCategory(String category);
 
     List<Items> findAllByPriceBetween(Double startPrice, Double endPrice);

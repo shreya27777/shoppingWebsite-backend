@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -23,10 +24,16 @@ public class UsersController {
     }
 
     @PostMapping(path = "/signup")
-    public Boolean addUser(@RequestBody Users users) {
+    public Users addUser(@RequestBody Users users) {
         users.setRole("user");
         users.setActive(1);
         return usersServiceImp.signUpUser(users);
+    }
+
+    @PostMapping(path = "/update")
+    @ResponseBody
+    public Users updateUser(@RequestBody Users users, Principal principal) {
+        return usersServiceImp.update(users, principal);
     }
 
 //    @GetMapping(path = "/get/{category}", produces = "application/json")
@@ -42,15 +49,21 @@ public class UsersController {
     }
 
     @GetMapping(path = "/logout")
-    public Boolean logout(HttpServletRequest request, HttpServletResponse response){
-        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Logout servlet : "+authentication);
+    public Boolean logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Logout servlet : " + authentication);
 
-        if(authentication!=null){
-            new SecurityContextLogoutHandler().logout(request,response,authentication);
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
             request.getSession().invalidate();
         }
         return true;
+    }
+
+    @GetMapping(path = "/get-profile", produces = "application/json")
+    @ResponseBody
+    public Users getProfile(Principal principal) {
+        return usersServiceImp.getUser(principal);
     }
 }
 

@@ -93,6 +93,7 @@ public class CartService {
         for (Cart cart : cartList) {
             Orders orders = new Orders();
             orders.setUserId(cart.getUsers().getUserId());
+            orders.setUserName(cart.getUsers().getName());
             orders.setQuantity(cart.getQuantity());
             orders.setPrice(cart.getItems().getPrice());
             orders.setItemName(cart.getItems().getName());
@@ -100,12 +101,12 @@ public class CartService {
             cartRepository.delete(cart);
             ordersRepository.saveAndFlush(orders);
         }
-        return ordersRepository.findAllByUserId(users.getUserId());
+        return ordersRepository.findAllByUserIdOrderByDateDesc(users.getUserId());
     }
 
     public List<Orders> orderHistory(Principal principal){
         Users users = usersRepository.findByEmail(principal.getName()).get();
-        return ordersRepository.findAllByUserId(users.getUserId());
+        return ordersRepository.findAllByUserIdOrderByDateDesc(users.getUserId());
     }
 }
 

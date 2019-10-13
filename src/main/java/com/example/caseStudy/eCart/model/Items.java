@@ -17,6 +17,7 @@ public class Items implements Serializable {
     private String description;
     @Column(nullable = false, columnDefinition = "int default '1'")
     private Integer active;
+    private Boolean popular;
 
 //    @Embedded
 //    private ItemsDetails ItemsDetails;
@@ -89,7 +90,15 @@ public class Items implements Serializable {
         this.active = active;
     }
 
-//    public ItemsDetails getItemsDetails() {
+    public Boolean getPopular() {
+        return popular;
+    }
+
+    public void setPopular(Boolean popular) {
+        this.popular = popular;
+    }
+
+    //    public ItemsDetails getItemsDetails() {
 //        return ItemsDetails;
 //    }
 //

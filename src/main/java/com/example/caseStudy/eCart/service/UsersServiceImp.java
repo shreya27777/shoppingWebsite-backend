@@ -5,8 +5,8 @@ import com.example.caseStudy.eCart.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -22,12 +22,12 @@ public class UsersServiceImp implements UsersService {
         return "invalid credentials";
     }
 
-    public Boolean signUpUser(Users users) {
+    public Users signUpUser(Users users) {
         if (!usersRepository.existsByEmail(users.getEmail())) {
             usersRepository.saveAndFlush(users);
-            return true;
+            return users;
         }
-        return false;
+        return null;
     }
 
     public String removeAllUsers() {
@@ -35,20 +35,35 @@ public class UsersServiceImp implements UsersService {
         return "all users removed";
     }
 
-    public String removeUser(Users users) {
-        usersRepository.delete(users);
-        return "user removed";
+    public List<Users> removeUser(Long id) {
+        Users users1 = usersRepository.findByUserId(id).get();
+        usersRepository.delete(users1);
+        return usersRepository.findAll();
     }
 
     public List<Users> getAllUser() {
         return usersRepository.findAll();
     }
 
-    public Optional<Users> getUser(String email) {
-        boolean isPresent = usersRepository.existsByEmail(email);
-        if (isPresent) {
-            return usersRepository.findByEmail(email);
-        }
-        return null;
+    public Users getUser(Principal principal) {
+        return usersRepository.findByEmail(principal.getName()).get();
+    }
+
+    public Users update(Users users, Principal principal) {
+        Users updatedUser = usersRepository.findByEmail(principal.getName()).get();
+        updatedUser.setEmail(users.getEmail());
+        updatedUser.setPassword(users.getPassword());
+        updatedUser.setName(users.getName());
+        usersRepository.saveAndFlush(updatedUser);
+        return updatedUser;
+    }
+
+    public List<Users> updateById(Users users, Long id) {
+        Users updatedUser = usersRepository.findById(id).get();
+        updatedUser.setEmail(users.getEmail());
+        updatedUser.setPassword(users.getPassword());
+        updatedUser.setName(users.getName());
+        usersRepository.saveAndFlush(updatedUser);
+        return usersRepository.findAll();
     }
 }

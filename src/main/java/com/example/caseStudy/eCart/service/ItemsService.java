@@ -21,10 +21,15 @@ public class ItemsService {
         itemsRepository.saveAndFlush(items);
         return true;
     }
+    public List<Items> addItems(Items items) {
+        itemsRepository.saveAndFlush(items);
+        return itemsRepository.findAll();
+    }
 
-    public boolean removeItem(Items items) {
+    public List<Items> removeItem(Long id) {
+        Items items = itemsRepository.findById(id).get();
         itemsRepository.delete(items);
-        return true;
+        return itemsRepository.findAll();
     }
 
     public boolean removeAll() {
@@ -49,5 +54,21 @@ public class ItemsService {
     }
     public List<Items> getByCategoryAndPrice(String category,Double startPrice, Double endPrice) {
         return itemsRepository.findAllByCategoryAndPriceBetween(category,startPrice, endPrice);
+    }
+
+    public List<Items> updateById(Items items, Long id) {
+        Items updatedItem = itemsRepository.findById(id).get();
+        updatedItem.setCategory(items.getCategory());
+        updatedItem.setDescription(items.getDescription());
+        updatedItem.setName(items.getName());
+        updatedItem.setImage(items.getImage());
+        updatedItem.setDetails(items.getDetails());
+        updatedItem.setPrice(items.getPrice());
+        itemsRepository.saveAndFlush(updatedItem);
+        return itemsRepository.findAll();
+    }
+
+    public List<Items> getPopularItems(String category) {
+        return itemsRepository.findAllByCategoryAndPopular(category, true);
     }
 }

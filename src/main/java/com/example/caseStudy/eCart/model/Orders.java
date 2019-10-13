@@ -12,10 +12,19 @@ public class Orders implements Serializable {
     private String itemName;
     private Date date;
     private Long userId;
+    private String userName;
     private Double price;
     private int quantity;
 
     public Orders() {
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Long getId() {

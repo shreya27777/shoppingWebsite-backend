@@ -38,11 +38,13 @@ public class ItemController {
         return itemsService.removeAll();
     }
 
-    @GetMapping(path = "/get", produces = "application/json")
+    @GetMapping(path = "/get-popular/{category}", produces = "application/json")
     @ResponseBody
-    public List<Items> getItem() {
-        return itemsService.getItems();
+    public List<Items> getPopularItems(@PathVariable("category") String category) {
+        return itemsService.getPopularItems(category);
     }
+
+
 
     @GetMapping(path = "/getByid/{id}")
     public Optional<Items> getFields(@PathVariable("id") Long id) {
