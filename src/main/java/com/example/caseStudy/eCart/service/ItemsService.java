@@ -5,12 +5,13 @@ import com.example.caseStudy.eCart.repository.ItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ItemsService {
-    public ItemsRepository itemsRepository;
+    private ItemsRepository itemsRepository;
 
     @Autowired
     public ItemsService(ItemsRepository itemsRepository) {
@@ -21,6 +22,7 @@ public class ItemsService {
         itemsRepository.saveAndFlush(items);
         return true;
     }
+
     public List<Items> addItems(Items items) {
         itemsRepository.saveAndFlush(items);
         return itemsRepository.findAll();
@@ -52,8 +54,9 @@ public class ItemsService {
     public List<Items> getByPriceBetween(Double startPrice, Double endPrice) {
         return itemsRepository.findAllByPriceBetween(startPrice, endPrice);
     }
-    public List<Items> getByCategoryAndPrice(String category,Double startPrice, Double endPrice) {
-        return itemsRepository.findAllByCategoryAndPriceBetween(category,startPrice, endPrice);
+
+    public List<Items> getByCategoryAndPrice(String category, Double startPrice, Double endPrice) {
+        return itemsRepository.findAllByCategoryAndPriceBetween(category, startPrice, endPrice);
     }
 
     public List<Items> updateById(Items items, Long id) {
@@ -70,5 +73,20 @@ public class ItemsService {
 
     public List<Items> getPopularItems(String category) {
         return itemsRepository.findAllByCategoryAndPopular(category, true);
+    }
+
+    public List<Items> searchResult(String keyword) {
+        List<Items> itemsList = itemsRepository.findAll();
+        List<Items> foundList = new ArrayList<>();
+
+        for (Items items : itemsList) {
+            if (items.getName() != null && items.getDescription() != null && (items.getName().
+                    toLowerCase().contains(keyword.toLowerCase())
+                    || items.getDescription().toLowerCase().contains(keyword.toLowerCase())
+                    || items.getCategory().toLowerCase().contains(keyword.toLowerCase()))) {
+                foundList.add(items);
+            }
+        }
+        return foundList;
     }
 }

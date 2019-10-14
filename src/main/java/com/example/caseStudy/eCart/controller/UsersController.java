@@ -1,5 +1,6 @@
 package com.example.caseStudy.eCart.controller;
 
+import com.example.caseStudy.eCart.model.Role;
 import com.example.caseStudy.eCart.model.Users;
 import com.example.caseStudy.eCart.service.UsersServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,9 @@ public class UsersController {
 //        return itemsService.getByCategory(category);
 //    }
 
-    @GetMapping(path = "/login", produces = "application/json")
+    @GetMapping(path = "/login")
     @ResponseBody
-    public Boolean getUser() {
-        return true;
+    public String getRole(Principal principal) { return "\""+usersServiceImp.getRole(principal)+"\"";
     }
 
     @GetMapping(path = "/logout")

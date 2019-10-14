@@ -10,10 +10,10 @@ public class Items implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
     private String name;
-    private Double price ;
-    private String details ;
-    private String image ;
-    private String category ;
+    private Double price;
+    private String details;
+    private String image;
+    private String category;
     private String description;
     @Column(nullable = false, columnDefinition = "int default '1'")
     private Integer active;
@@ -22,7 +22,7 @@ public class Items implements Serializable {
 //    @Embedded
 //    private ItemsDetails ItemsDetails;
 
-    public Items(){
+    public Items() {
 
     }
 

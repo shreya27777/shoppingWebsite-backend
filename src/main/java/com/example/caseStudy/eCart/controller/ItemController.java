@@ -45,7 +45,6 @@ public class ItemController {
     }
 
 
-
     @GetMapping(path = "/getByid/{id}")
     public Optional<Items> getFields(@PathVariable("id") Long id) {
         return itemsService.getById(id);
@@ -66,13 +65,17 @@ public class ItemController {
 
     @GetMapping(path = "/get/{category}", produces = "application/json")
     public List<Items> getByCategoryAndPrice(@PathVariable("category") String category,
-                                                  @RequestParam(value = "price1", required = false) Double price1,
-                                                  @RequestParam(value = "price2" ,required = false) Double price2) {
-        if(price1 == null && price2 == null){
+                                             @RequestParam(value = "price1", required = false) Double price1,
+                                             @RequestParam(value = "price2", required = false) Double price2) {
+        if (price1 == null && price2 == null) {
             return itemsService.getByCategory(category);
         }
         return itemsService.getByCategoryAndPrice(category, price1, price2);
+    }
 
+    @GetMapping(path = "search/{keyword}", produces = "application/json")
+    public List<Items> getSearchResult(@PathVariable("keyword") String keyword) {
+        return itemsService.searchResult(keyword);
     }
 
 //    @GetMapping(path = "/get/{category}", produces = "application/json")

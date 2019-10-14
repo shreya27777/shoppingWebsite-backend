@@ -49,6 +49,11 @@ public class UsersServiceImp implements UsersService {
         return usersRepository.findByEmail(principal.getName()).get();
     }
 
+    public String getRole(Principal principal) {
+        Users users = usersRepository.findByEmail(principal.getName()).get();
+        return users.getRole();
+    }
+
     public Users update(Users users, Principal principal) {
         Users updatedUser = usersRepository.findByEmail(principal.getName()).get();
         updatedUser.setEmail(users.getEmail());
@@ -64,6 +69,17 @@ public class UsersServiceImp implements UsersService {
         updatedUser.setPassword(users.getPassword());
         updatedUser.setName(users.getName());
         usersRepository.saveAndFlush(updatedUser);
+        return usersRepository.findAll();
+    }
+
+    public List<Users> toggleActivate(Long id) {
+        Users user = usersRepository.findById(id).get();
+        if (user.getActive() == 1) {
+            user.setActive(0);
+        } else {
+            user.setActive(1);
+        }
+        usersRepository.saveAndFlush(user);
         return usersRepository.findAll();
     }
 }

@@ -50,7 +50,13 @@ public class AdminController {
     @PostMapping("/addItem")
     public List<Items> addItems(@RequestBody Items items) {
         items.setActive(1);
+        items.setPopular(false);
         return itemsService.addItems(items);
+    }
+
+    @PostMapping("/deActivate/{id}")
+    public List<Users> toggleActivate(@PathVariable("id") Long id) {
+        return usersServiceImp.toggleActivate(id);
     }
 
 
