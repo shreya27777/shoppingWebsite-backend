@@ -1,13 +1,10 @@
 package com.example.caseStudy.eCart.controller;
 
 import com.example.caseStudy.eCart.model.Items;
-import com.example.caseStudy.eCart.repository.ItemsRepository;
 import com.example.caseStudy.eCart.service.ItemsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/items")
 public class ItemController {
-    ItemsService itemsService;
+    private ItemsService itemsService;
 
     @Autowired
     public ItemController(ItemsService itemsService) {
